@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 const {logger, logEvents} = require("./middleware/logger");
 const corsOptions = require("./config/allowedOrigins");
 const errorHandeler = require("./middleware/errorHandeler")
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const noteRouter = require('./routes/noteRouter');
+const userRouter = require('./routes/userRouter');
 const connectDB = require("./config/dbConnect");
 
 const app = express();
@@ -23,8 +23,8 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/note', noteRouter);
+app.use('/user', userRouter);
 
 
 
