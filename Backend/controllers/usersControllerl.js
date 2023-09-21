@@ -70,8 +70,14 @@ if(!user){
     .status(400)
     .json({message:"User is not found"})
 }
-
+// check for dublicate username
+const dublicate = await User.findOnde({username}).lean().exec();
 // update user details
+if(dublicate && dublicate?._id.toString()!==id){
+return res
+.status(400)
+.json({message:"Dublicate username"})
+}
 user.username = username,
 user.roles = roles,
 user.isActive = isActive
