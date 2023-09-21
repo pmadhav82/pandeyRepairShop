@@ -71,7 +71,7 @@ if(!user){
     .json({message:"User is not found"})
 }
 // check for dublicate username
-const dublicate = await User.findOnde({username}).lean().exec();
+const dublicate = await User.findOne({username}).lean().exec();
 // update user details
 if(dublicate && dublicate?._id.toString()!==id){
 return res
@@ -102,7 +102,8 @@ if(!id){
 }
 
 // Does the user still have assigned notes?
-const note = Note.findOne({user:id}).lean().exec();
+const note = await Note.findOne({user:id}).lean().exec();
+console.log(note);
 if(note){
     return res
     .status(400)

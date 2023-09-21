@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/note', noteRouter);
+app.use('/', noteRouter);
 app.use('/user', userRouter);
 
 
@@ -36,14 +36,15 @@ connectDB();
 
 mongoose.connection.once("open", ()=>{
     console.log("connected to database");
+    
+    app.listen(PORT,()=>{
+        console.log(`Server is running on port ${PORT}` );
+    })
 })
 
 
 mongoose.connection.on("error", (err)=>{
-    console.log(er.message);
+    console.log(err.message);
     logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, "mongoErrorLog.log")
 })
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}` );
-})
