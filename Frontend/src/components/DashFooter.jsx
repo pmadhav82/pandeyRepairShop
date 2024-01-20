@@ -1,9 +1,27 @@
-
+import { useNavigate, useLocation } from "react-router-dom"
+import { HouseFill } from "react-bootstrap-icons"
+import { Container,Row, Col } from "react-bootstrap"
 const DashFooter =() =>{
+const navigate = useNavigate()
+const {pathname} = useLocation()
+
+
+const goHomeClicked = ()=> navigate('/dash')
 
     return <>
-    
-    <h3>Dash footer</h3>
+
+<Container>
+<Row>
+<Col>
+{pathname !== "/dash" &&<button onClick={goHomeClicked }><HouseFill/></button> }
+
+</Col>
+
+</Row>
+
+</Container>
+
+
     </>
 }
 

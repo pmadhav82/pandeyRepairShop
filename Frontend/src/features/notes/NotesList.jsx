@@ -1,10 +1,10 @@
 import { Container } from "react-bootstrap"
-const Login = () => {
+const NotesList = () => {
     return <>
 <Container>
-    <h2>Login</h2>
+    <h2>NotesList</h2>
 </Container>
 </>
     
 }
-export default Login
+export default NotesList
