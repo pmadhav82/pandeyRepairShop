@@ -18,9 +18,10 @@ const getAllUsers = asyncHandeler(async (req, res) => {
 
 const createNewUser = asyncHandeler(async (req, res) => {
   const { username, password, roles } = req.body;
-
+  
   // validate data
-  if (!username || !password || !roles.length || !Array.isArray(roles)) {
+  if (!username || !password || !roles|| !Array.isArray(roles)) {
+ 
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -50,7 +51,7 @@ const createNewUser = asyncHandeler(async (req, res) => {
     res.status(400).json({ message: " Invalid user data received" });
   }
 });
-
+   
 // update user
 
 const updateUser = asyncHandeler(async (req, res) => {
