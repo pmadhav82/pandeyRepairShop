@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const router = require("express").Router()
 
-/* GET home page. */
-router.get("/", (req,res)=>{
-  res.json({message:"welcome to express"})
-})
-
-module.exports = router;
+const notesController = require("../controllers/notesController")
+router.route("/")
+.get(notesController.getAllNotes)
+.post(notesController.createNewNote)
+.delete(notesController.deleteNote)
+.patch(notesController.updateNote)
+module.exports = router

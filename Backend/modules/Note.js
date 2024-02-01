@@ -4,7 +4,7 @@ const noteSchema = new mongoose.Schema(
     {
 user:{
     type: mongoose.Schema.Types.ObjectId,
-    ref:"User",
+    ref:"users",
     required:true
 },
 completed:{
@@ -18,6 +18,9 @@ text:{
 title:{
     type:String,
     required:true
+},
+ticket:{
+    type:Number
 }
 },
 {
@@ -28,10 +31,13 @@ title:{
 )
 
 
-noteSchema.plugin(AutoIncrement,{
-    inc_field:"ticket",
-    id:"ticketNums",
-    start_seq:500
+
+
+noteSchema.plugin(AutoIncrement, {
+    inc_field: 'ticket',
+    id:"ticketNum",
+    start_seq: 500,
+    disable_hooks: true
 })
 
-module.exports = mongoose.model("Note", noteSchema);
+module.exports = mongoose.model("notes", noteSchema);
