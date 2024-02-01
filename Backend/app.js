@@ -7,8 +7,9 @@ const mongoose = require("mongoose");
 const {logger, logEvents} = require("./middleware/logger");
 const corsOptions = require("./config/allowedOrigins");
 const errorHandeler = require("./middleware/errorHandeler")
-const noteRouter = require('./routes/noteRouter');
 const userRouter = require('./routes/userRouter');
+const rootRouter = require("./routes/rootRouter");
+const noteRouter = require("./routes/noteRouter")
 const connectDB = require("./config/dbConnect");
 
 const app = express();
@@ -23,10 +24,13 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', noteRouter);
+app.use("/", rootRouter);
 app.use('/user', userRouter);
+app.use("/note", noteRouter);
 
-
+app.all("*",(req,res)=>{
+    res.json({message:"Page not found"})
+})
 
 app.use(errorHandeler);
 

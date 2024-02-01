@@ -1,12 +1,13 @@
 const User = require("../modules/User");
 const Note = require("../modules/Note");
 const asyncHandeler = require("express-async-handler");
+const { isValidObjectId } = require("mongoose");
 
 
 // get all note
 
 const getAllNotes = asyncHandeler(async (req,res)=>{
-    const notes = await Note.find().lean().exec();
+    const notes = await Note.find().populate({path:"user",select:"username"}).lean().exec();
     if(!notes?.length){
         return res
         .status(400)
@@ -14,18 +15,9 @@ const getAllNotes = asyncHandeler(async (req,res)=>{
     }
 
 
-    //add username to each note before sending
 
-    const noteWithUser = Promise.all(notes.map(async (note)=>{
-const user = await User.findById(note.user).lean().exec();
-return {
-    ...note,
-    username:user.username
-}
 
-res.json(noteWithUser);
-
-    }))
+    res.json(notes);
 })
 
 
@@ -40,22 +32,30 @@ if(!text || !title  || !user){
     .json({message:"All fields are required"})
 }
 
-// create new note
-const newNote = Note.create({
+// create new note3
+const newNoteObj = {
     title,
     text,
     user
-})
-
+}
+if(isValidObjectId(user) && user.length ===24){
+    console.log("valid id")
+}else{
+    console.log("Invalid id")
+}
+const newNote = await Note.create(newNoteObj)
 if(newNote){
     return res
     .status(201)
     .json({message:"New note is created"})
 }else{
-    return res
+    res
     .status(400)
     .json({message:"Invalid note data received"})
 }
+
+
+res.status(400).json({message:"Something went wrong..."})
 
 })
 
