@@ -1,26 +1,37 @@
 import { Container, Row, Col } from "react-bootstrap"
-import { useGetUserQuery, useGetUsersQuery } from "./usersApiSlice"
+import {  useGetUsersQuery } from "./usersApiSlice"
+import User from "./User";
 const UsersList = () => {
 const {data:users, isError,  isLoading,isSuccess, error} = useGetUsersQuery()
 let content;
-console.log(error)
+
 if(isLoading){
     content = <div>loading...</div>
+
 }else if(isSuccess){
-    content = users.map(user=> <><p key={user._id}>{user.username}</p></>)
+
+
+
+
+    content = (<div className="users-list-container">
+<div className="header">Username</div>
+<div className="header">Roles</div>
+<div className="header">Edit</div>
+{users?.length ? users.map(user=> <User user={user} key={user._id} />): null}
+    </div>)
 }
 else if(isError){
-    content = <div> {error.error.toString()}</div>
+    content = <div>{error?.data?.message  || <p>Someting went wrong, try again</p>}</div>
 }
 
 
     return <>
 <Container >
     <h2>UsersList</h2>
-    <div className="user-list">
+
     {content}
 
-    </div>
+    
 </Container>
 </>
     

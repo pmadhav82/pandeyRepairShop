@@ -10,9 +10,9 @@ const goHomeClicked = ()=> navigate('/dash')
 
     return <>
 
-<Container>
+<Container className="mt-2">
 <Row>
-<Col>
+<Col >
 {pathname !== "/dash" &&<button onClick={goHomeClicked }><HouseFill/></button> }
 
 </Col>

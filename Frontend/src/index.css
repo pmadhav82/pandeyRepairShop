@@ -1,9 +1,34 @@
 
 
-.user-list{
+.users-list-container{
+max-width: 800px;
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(min(10rem,100%),1fr));
+    grid-template-columns: 1fr 2fr 1fr; /* Columns will adjust to fit the screen size */
+    grid-gap: 10px; /* Add some space between the cells */
+  
+}
+.users-list-container, .notes-list-container >div{
+    background-color: whitesmoke;
+    padding: .5rem;
+}
+.header{
+    font-weight: 600;
+    font-size: 1.2em;
+}
 
-    gap:1rem
+.notes-list-container{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
 
+
+}
+@media (max-width:768px){
+    .notes-list-container{
+        grid-template-columns: 1fr 2fr 1fr;
+    }
+
+ .cln-3, .cln-4, .cln-5{
+    display: none;
+ }
 }
