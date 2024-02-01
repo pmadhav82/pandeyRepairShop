@@ -8,6 +8,8 @@ import DashLayout from './components/DashLayout'
 import UserWelcome from './features/auth/UserWelcome'
 import NotesList from './features/notes/NotesList'
 import UsersList from './features/users/UsersList'
+import EditUser from './features/users/EditUser'
+import EditNote from './features/notes/EditNote'
 
 function App() {
 
@@ -26,9 +28,11 @@ function App() {
   <Route index element = {<UserWelcome/>}/>
 <Route path='notes'>
   <Route index element ={ <NotesList/>}/>
+  <Route path=':noteId' element = {<EditNote/>}/>
 </Route>
 <Route path='users'>
 <Route index element = {<UsersList/>}/>
+<Route path=':userId' element = {<EditUser/>}/>  
 </Route>
 
 </Route>

@@ -1,3 +1,5 @@
+
+
 import { apiSlice } from "../../app/api/apiSlice";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
@@ -6,20 +8,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: () => "/user ",
       providesTags: (result = [], error, arg) => [
         "User",
-        ...result.map(({ _id }) => ({ type: "User", id: _id })),
-      ],
+        ...result.map(({ _id }) => ({ type: "User", id: _id }))
+      ]
     }),
-    getUser: builder.query({
-      query: (id) => `/user/${id}`,
-      providesTags: (result, error, arg) => [{ type: "User", id: arg }],
-    }),
+   
     addNewUser: builder.mutation({
       query: (userDetail) => ({
         url: "/user",
         method: "Post",
         body: userDetail,
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg._id }],
+      invalidatesTags: ["User"]
     }),
     editUser: builder.mutation({
       query: (updatedUser) => ({
@@ -29,12 +28,33 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, arg) => [{ type: "User", id: arg._id }],
     }),
+
+deleteUser: builder.mutation({
+  query: (userId)=>({
+    url:"/user",
+    method:"Delete",
+    body:userId
   }),
+  invalidatesTags:(result, error, arg)=>[{type:"User", id:arg._id}]
+})
+  })
+
 });
+
+
+
 
 export const {
   useGetUserQuery,
   useAddNewUserMutation,
   useEditUserMutation,
   useGetUsersQuery,
+  useDeleteUserMutation
 } = usersApiSlice;
+
+export const getUserById = (userId)=>{
+const user =  useGetUsersQuery("getUsers",{
+    selectFromResult: result => result.data? result.data.find(user=> user._id === userId):[]
+ })
+ return user
+}
