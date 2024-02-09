@@ -3,11 +3,11 @@
 .users-list-container{
 max-width: 800px;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Columns will adjust to fit the screen size */
-    grid-gap: 10px; /* Add some space between the cells */
+    grid-template-columns: 1fr 2fr 1fr; 
+    grid-gap: 10px; 
   
 }
-.users-list-container, .notes-list-container >div{
+.users-list-container > div,.notes-list-container >div{
     background-color: whitesmoke;
     padding: .5rem;
 }

@@ -1,4 +1,4 @@
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row,Spinner, Col } from "react-bootstrap"
 import {  useGetUsersQuery } from "./usersApiSlice"
 import User from "./User";
 const UsersList = () => {
@@ -6,7 +6,7 @@ const {data:users, isError,  isLoading,isSuccess, error} = useGetUsersQuery()
 let content;
 
 if(isLoading){
-    content = <div>loading...</div>
+    content = <Spinner animation="border"/>
 
 }else if(isSuccess){
 

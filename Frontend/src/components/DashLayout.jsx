@@ -1,17 +1,20 @@
-import { Outlet } from "react-router-dom"
-import DashHeader from "./DashHeader"
-import DashFooter from "./DashFooter"
+import { Outlet } from "react-router-dom";
+import DashHeader from "./DashHeader";
+import DashFooter from "./DashFooter";
+import { Container } from "react-bootstrap";
 
-const DashLayout = () =>{
+const DashLayout = () => {
+  return (
+    <>
+      <DashHeader />
+      <Container>
+        
+        <Outlet />
+      </Container>
 
-
-    return<>
-    <DashHeader/>
-    <div className="dash-container">
-                <Outlet />
-            </div>
-    <DashFooter/>
+      <DashFooter />
     </>
-}
+  );
+};
 
-export default DashLayout
+export default DashLayout;
