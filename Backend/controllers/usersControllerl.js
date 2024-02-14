@@ -104,7 +104,7 @@ if(!id){
 
 // Does the user still have assigned notes?
 const note = await Note.findOne({user:id}).lean().exec();
-console.log(note);
+
 if(note){
     return res
     .status(400)
