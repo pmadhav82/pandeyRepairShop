@@ -4,12 +4,12 @@
 max-width: 800px;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr; 
-    grid-gap: 10px; 
+    grid-gap: 5px; 
   
 }
 .users-list-container > div,.notes-list-container >div{
     background-color: whitesmoke;
-    padding: .5rem;
+    padding: .2rem;
 }
 .header{
     font-weight: 600;
@@ -19,16 +19,10 @@ max-width: 800px;
 .notes-list-container{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 5px;
 
 
 }
-@media (max-width:768px){
-    .notes-list-container{
-        grid-template-columns: 1fr 2fr 1fr;
-    }
-
- .cln-3, .cln-4, .cln-5{
-    display: none;
+@media (max-width:560px){
+  .info{flex-direction: column;}
  }
-}

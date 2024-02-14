@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAddNewUserMutation } from "./usersApiSlice";
 import { ROLES } from "../../config/roles";
-import { USER_REGEX, PWD_REGEX } from "../../config/regex";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
+import useValidation from "../../config/regex";
 const NewUserForm = () => {
   const [addNewUser, { isLoading, isError, error, isSuccess }] =
     useAddNewUserMutation();
@@ -12,6 +11,8 @@ const NewUserForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState([ROLES.Employee]);
+
+const [validUsername, validPassword] = useValidation(username,password);
 
   const onUsernameChanged = (e) => setUsername(e.target.value);
   const onPasswordChanged = (e) => setPassword(e.target.value);
@@ -26,11 +27,9 @@ const NewUserForm = () => {
     }
   };
 
-  const isValidUserName = USER_REGEX.test(username);
-  const isValidPassword = PWD_REGEX.test(password);
+ 
   const canSave =
-    [isValidPassword, isValidUserName, roles.length].every(Boolean) &&
-    !isLoading;
+    [validPassword, validUsername, roles.length].every(Boolean) && !isLoading;
 
   const formHandeler = async (e) => {
     e.preventDefault();
@@ -76,6 +75,8 @@ const NewUserForm = () => {
         )}
       </div>
       <form>
+        
+        <h2>Add New User</h2>
         <div className="form-group mt-1">
           <label>Username</label>
           <input
@@ -86,6 +87,9 @@ const NewUserForm = () => {
             className="form-control mt-1"
             placeholder="Enter user name"
           />
+          <small id="usernameHelp" className="form-text text-muted">
+            [3-20 letters]
+          </small>
         </div>
         <div className="form-group mt-1">
           <label>Password</label>
@@ -98,6 +102,9 @@ const NewUserForm = () => {
             className="form-control  mt-1"
             placeholder="Enter password"
           />
+          <small id="passwordHelp" className="form-text text-muted">
+            [4-12 chars incl. !@#$%]
+          </small>
         </div>
         <div className="form-group mt-1">
           <div className="col-sm-2">Roles</div>

@@ -1,6 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
-const notesApiSlice = apiSlice.injectEndpoints({
+ export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotes: builder.query({
       query: () => "/note",
