@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { ROLES } from "../../config/roles";
+
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Collapse from "react-bootstrap/Collapse";
 import { useEditUserMutation } from "./usersApiSlice";
 import useValidation from "../../config/regex";
+import DisplayError from "../../config/DisplayError";
+
+import useToast from "../../config/useToast";
+import { useNavigate, useNavigation } from "react-router-dom";
+
 const EditUserModal = ({ user }) => {
-  const [editUser, { isError, error, isLoading, isSuccess }] =
+  const [editUser, { isError, error, isLoading, isSuccess, data }] =
     useEditUserMutation();
 
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+
+const navigate  = useNavigate();
 
   const handleClose = () => {
     setUsername(user?.username);
@@ -20,6 +29,10 @@ const EditUserModal = ({ user }) => {
 
     setShow(false);
   };
+
+
+const showToastMessage  = useToast()
+
   const handleShow = () => setShow(true);
 
   const [username, setUsername] = useState(user.username);
@@ -39,15 +52,32 @@ const EditUserModal = ({ user }) => {
       let updatedRoles = roles.filter((role) => role !== value);
       setRoles(updatedRoles);
     }
+ 
   };
 
   let canSave = password
     ? [validPassword, validUsername, roles?.length].every(Boolean) && !isLoading
     : [validUsername, roles?.length].every(Boolean) && !isLoading;
-  const formHandeler = (e) => {
+  
+  
+    const formHandeler = async (e) => {
     e.preventDefault();
-    console.log({ username, roles, active, password });
+    
+const updatedUser = password? {id:user?._id,password,username, roles, isActive:active}: {id: user?._id, username, roles, isActive:active}
+
+   await editUser(updatedUser);
+   
   };
+
+// navigate to users page if form submitted succefully
+useEffect(()=>{if(isSuccess){
+showToastMessage(data?.message);
+handleClose();
+navigate("/dash/users");
+
+}},[isSuccess, navigate])
+
+
 
   const options = Object.values(ROLES).map((role) => {
     return (
@@ -66,7 +96,7 @@ const EditUserModal = ({ user }) => {
   });
   return (
     <>
-      {" "}
+      
       <Button
         variant="btn btn-secondary"
         className=" flex-grow-1 mx-1"
@@ -86,6 +116,7 @@ const EditUserModal = ({ user }) => {
 
         <form>
           <Modal.Body>
+            {isError && <DisplayError  error = {error}/> }
             <div className="form-group mt-1">
               <label>Username</label>
               <input
@@ -164,6 +195,7 @@ const EditUserModal = ({ user }) => {
           </Modal.Footer>
         </form>
       </Modal>
+
     </>
   );
 };

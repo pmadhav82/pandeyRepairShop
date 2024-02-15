@@ -1,60 +1,55 @@
-
-
 import { apiSlice } from "../../app/api/apiSlice";
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => "/user ",  
+      query: () => "/user ",
       providesTags: (result = [], error, arg) => [
         "User",
-        ...result.map(({ _id }) => ({ type: "User", id: _id }))
-      ]
+        ...result.map(({ _id }) => ({ type: "User", id: _id })),
+      ],
     }),
-   
+
     addNewUser: builder.mutation({
       query: (userDetail) => ({
         url: "/user",
         method: "Post",
-        body: {...userDetail}
+        body: { ...userDetail },
       }),
-      invalidatesTags: ["User"]
+      invalidatesTags: ["User"],
     }),
     editUser: builder.mutation({
       query: (updatedUser) => ({
         url: "/user",
-        method: "Patch",
-        body: updatedUser,
+        method: "Put",
+        body: {... updatedUser}
       }),
       invalidatesTags: (result, error, arg) => [{ type: "User", id: arg._id }],
     }),
 
-deleteUser: builder.mutation({
-  query: (userId)=>({
-    url:"/user",
-    method:"Delete",
-    body:{id:userId}
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: "/user",
+        method: "Delete",
+        body: { id: userId },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "User", id: arg._id }],
+    }),
   }),
-  invalidatesTags:(result, error, arg)=>[{type:"User", id:arg._id}]
-})
-  })
-
 });
-
-
-
 
 export const {
   useGetUserQuery,
   useAddNewUserMutation,
   useEditUserMutation,
   useGetUsersQuery,
-  useDeleteUserMutation
+  useDeleteUserMutation,
 } = usersApiSlice;
 
-export const getUserById = (userId)=>{
-const user =  useGetUsersQuery("getUsers",{
-    selectFromResult: (result) => result.data? result.data.find(user=> user._id === userId):[]
- })
- return user
-}
+export const getUserById = (userId) => {
+  const user = useGetUsersQuery("getUsers", {
+    selectFromResult: (result) =>
+      result.data ? result.data.find((user) => user._id === userId) : [],
+  });
+  return user;
+};

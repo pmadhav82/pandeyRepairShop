@@ -4,10 +4,13 @@ import Modal from "react-bootstrap/Modal";
 import { useDeleteUserMutation } from "./usersApiSlice";
 import DisplayError from "../../config/DisplayError";
 import { useNavigate } from "react-router-dom";
+import useToast from "../../config/useToast";
 function DeleteUser({ username, userId }) {
   const navigate = useNavigate();
-  const [deleteUser, { isError, isLoading, isSuccess, error }] =
+  const [deleteUser, { isError, isLoading, isSuccess, error, data }] =
     useDeleteUserMutation();
+
+const showToastMessage = useToast();
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -19,6 +22,7 @@ function DeleteUser({ username, userId }) {
 
   useEffect(() => {
     if (isSuccess) {
+      showToastMessage(data?.message)
       navigate("/dash/users");
       handleClose();
     }

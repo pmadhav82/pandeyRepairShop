@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Welcome from "./components/Welcome";
@@ -17,6 +18,7 @@ import ViewNote from "./features/notes/ViewNote";
 function App() {
   return (
     <>
+ 
       <Header />
       <Routes>
         <Route>
@@ -41,6 +43,8 @@ function App() {
           </Route>
       
       </Routes>
+      
+<ToastContainer/>
     </>
   );
 }

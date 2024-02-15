@@ -22,12 +22,14 @@ const ViewNote = () => {
               <div className="card-body p-3">
                 <div className="d-flex text-black">
                   <div className="flex-grow-1 ms-1">
+                    
                     <h5 className="mb-1">{note?.title}</h5>
                     <p className="my-2">{note?.text}</p>
+
                     <div className="d-flex justify-content-start rounded-3 p-1 mb-2 info">
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Status</p>
-                        <p className="mb-0">
+                        
                         {note.completed ? (
             <p className="text-success">
               <b>Closed</b>
@@ -35,7 +37,7 @@ const ViewNote = () => {
           ) : (
             <p className="text-primary">Open</p>
           )}
-                        </p>
+                        
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Owner</p>

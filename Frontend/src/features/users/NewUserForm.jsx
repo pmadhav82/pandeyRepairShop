@@ -4,13 +4,17 @@ import { ROLES } from "../../config/roles";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import useValidation from "../../config/regex";
+import useToast from "../../config/useToast";
 const NewUserForm = () => {
-  const [addNewUser, { isLoading, isError, error, isSuccess }] =
+  const [addNewUser, { isLoading, isError, error, isSuccess, data }] =
     useAddNewUserMutation();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState([ROLES.Employee]);
+
+
+const showToastMessage = useToast();
 
 const [validUsername, validPassword] = useValidation(username,password);
 
@@ -34,16 +38,23 @@ const [validUsername, validPassword] = useValidation(username,password);
   const formHandeler = async (e) => {
     e.preventDefault();
 
-    if (canSave) {
-      await addNewUser({ username, password, roles });
+    if (canSave) { 
+      const userDetail ={username, password, roles};
+      await addNewUser(userDetail);
+      
     }
   };
+
+
+
+
 
   useEffect(() => {
     if (isSuccess) {
       setPassword("");
       setUsername("");
       setRoles([ROLES.Employee]);
+      showToastMessage(data?.message);
       navigate("/dash/users");
     }
   }, [isSuccess]);
