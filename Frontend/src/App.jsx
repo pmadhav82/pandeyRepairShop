@@ -11,11 +11,14 @@ import NotesList from "./features/notes/NotesList";
 import UsersList from "./features/users/UsersList";
 
 import NewUserForm from "./features/users/NewUserForm";
-import NewNoteForm from "./features/notes/NewNoteForm";
 
 import ViewUser from "./features/users/ViewUser";
 import ViewNote from "./features/notes/ViewNote";
+import NewNote from "./features/notes/NewNote";
 function App() {
+
+
+
   return (
     <>
  
@@ -32,7 +35,7 @@ function App() {
               <Route path="notes">
                 <Route index element={<NotesList />} />
                 <Route path=":noteId" element={<ViewNote />} />
-                <Route path="new" element={<NewNoteForm />} />
+                <Route path="new" element={<NewNote/>} />
               </Route>
               <Route path="users">
                 <Route index element={<UsersList />} />

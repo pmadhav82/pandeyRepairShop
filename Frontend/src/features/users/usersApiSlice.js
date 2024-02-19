@@ -22,7 +22,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (updatedUser) => ({
         url: "/user",
         method: "Put",
-        body: {... updatedUser}
+        body: { ...updatedUser }
       }),
       invalidatesTags: (result, error, arg) => [{ type: "User", id: arg._id }],
     }),
@@ -42,14 +42,18 @@ export const {
   useGetUserQuery,
   useAddNewUserMutation,
   useEditUserMutation,
-  useGetUsersQuery,
   useDeleteUserMutation,
+  useGetUsersQuery
 } = usersApiSlice;
 
 export const getUserById = (userId) => {
-  const user = useGetUsersQuery("getUsers", {
-    selectFromResult: (result) =>
-      result.data ? result.data.find((user) => user._id === userId) : [],
+  return useGetUsersQuery("getUsers", {
+    selectFromResult: (result) => {
+      const { isSuccess } = result;
+      const user = result.data ? result.data.find((user) => user._id === userId) : [];
+  return{isSuccess,user}  }
   });
-  return user;
+
 };
+
+

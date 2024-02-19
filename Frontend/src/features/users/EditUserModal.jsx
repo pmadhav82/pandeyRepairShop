@@ -10,7 +10,7 @@ import useValidation from "../../config/regex";
 import DisplayError from "../../config/DisplayError";
 
 import useToast from "../../config/useToast";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const EditUserModal = ({ user }) => {
   const [editUser, { isError, error, isLoading, isSuccess, data }] =
@@ -19,7 +19,7 @@ const EditUserModal = ({ user }) => {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
 
-const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setUsername(user?.username);
@@ -30,8 +30,7 @@ const navigate  = useNavigate();
     setShow(false);
   };
 
-
-const showToastMessage  = useToast()
+  const showToastMessage = useToast();
 
   const handleShow = () => setShow(true);
 
@@ -43,7 +42,7 @@ const showToastMessage  = useToast()
 
   const onUsernameChanged = (e) => setUsername(e.target.value);
   const onPasswordChanged = (e) => setPassword(e.target.value);
-  const onActiveChanged = (e) => setActive(!active);
+  const onActiveChanged = (e) => setActive(pre => !pre);
   const onRolesChange = (e) => {
     const { checked, value } = e.target;
     if (checked && !roles.includes(value)) {
@@ -52,32 +51,30 @@ const showToastMessage  = useToast()
       let updatedRoles = roles.filter((role) => role !== value);
       setRoles(updatedRoles);
     }
- 
   };
 
   let canSave = password
     ? [validPassword, validUsername, roles?.length].every(Boolean) && !isLoading
     : [validUsername, roles?.length].every(Boolean) && !isLoading;
-  
-  
-    const formHandeler = async (e) => {
-    e.preventDefault();
-    
-const updatedUser = password? {id:user?._id,password,username, roles, isActive:active}: {id: user?._id, username, roles, isActive:active}
 
-   await editUser(updatedUser);
-   
+  const formHandeler = async (e) => {
+    e.preventDefault();
+
+    const updatedUser = password
+      ? { id: user?._id, password, username, roles, isActive: active }
+      : { id: user?._id, username, roles, isActive: active };
+
+    await editUser(updatedUser);
   };
 
-// navigate to users page if form submitted succefully
-useEffect(()=>{if(isSuccess){
-showToastMessage(data?.message);
-handleClose();
-navigate("/dash/users");
-
-}},[isSuccess, navigate])
-
-
+  // navigate to users page if form submitted succefully
+  useEffect(() => {
+    if (isSuccess) {
+      showToastMessage(data?.message);
+      handleClose();
+      navigate("/dash/users");
+    }
+  }, [isSuccess, navigate]);
 
   const options = Object.values(ROLES).map((role) => {
     return (
@@ -96,7 +93,6 @@ navigate("/dash/users");
   });
   return (
     <>
-      
       <Button
         variant="btn btn-secondary"
         className=" flex-grow-1 mx-1"
@@ -116,7 +112,7 @@ navigate("/dash/users");
 
         <form>
           <Modal.Body>
-            {isError && <DisplayError  error = {error}/> }
+            {isError && <DisplayError error={error} />}
             <div className="form-group mt-1">
               <label>Username</label>
               <input
@@ -165,19 +161,10 @@ navigate("/dash/users");
 
             <div className="form-group mt-1">
               <div className="col-sm-2">Status</div>
-              <div className="form-check">
-                <input
-                  onChange={onActiveChanged}
-                  type="checkbox"
-                  name="isActive"
-                  checked={active}
-                  value={active}
-                  className="form-check-input m-1"
-                />
-                <label className="form-check-label">
-                  {active ? "Active" : "Inactive"}
-                </label>
-              </div>
+              <div className="form-check form-switch">
+  <input onChange={onActiveChanged}  class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked = {active} / >
+  <label class="form-check-label" for="flexSwitchCheckChecked">{active? "Active":"Deactivated"}</label>
+</div>
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -195,7 +182,6 @@ navigate("/dash/users");
           </Modal.Footer>
         </form>
       </Modal>
-
     </>
   );
 };

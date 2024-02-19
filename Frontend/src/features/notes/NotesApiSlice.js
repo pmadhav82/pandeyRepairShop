@@ -1,6 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
 
- export const notesApiSlice = apiSlice.injectEndpoints({
+export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotes: builder.query({
       query: () => "/note",
@@ -13,15 +13,15 @@ import { apiSlice } from "../../app/api/apiSlice";
       query: (noteDetail) => ({
         url: "/note",
         method: "Post",
-        body: noteDetail,
+        body: { ...noteDetail }
       }),
       invalidatesTags: ["Note"],
     }),
     editNote: builder.mutation({
-      query: (updatedNote) => ({
+      query: (updatedNoteDetail) => ({
         url: "/note",
-        method: "Patch",
-        body: updatedNote,
+        method: "Put",
+        body: {...updatedNoteDetail},
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Note", id: arg._id }],
     }),
@@ -29,7 +29,7 @@ import { apiSlice } from "../../app/api/apiSlice";
       query: (noteId) => ({
         url: "/note",
         method: "Delete",
-        body: noteId,
+        body: { id: noteId }
       }),
       invalidatesTags: (result, error, arg) => [{ type: "Note", id: arg._id }],
     }),
@@ -44,9 +44,15 @@ export const {
 } = notesApiSlice;
 
 
- export const getNoteById = (noteId)=>{
-    const note = useGetNotesQuery("getNotes",{
-        selectFromResult:result=>result.data? result.data.find(note=>note._id === noteId):[]
-    })
-    return note
+export const getNoteById = (noteId) => {
+ return useGetNotesQuery("getNotesQuery", {
+
+    selectFromResult: (result) => {
+      const { isLoading, isSuccess } = result;
+
+      const note = result.data ? result.data.find((note) => note._id === noteId) : [];
+      return { isLoading, isSuccess, note }
+    }
+  })
+
  }

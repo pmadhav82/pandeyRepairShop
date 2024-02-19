@@ -1,9 +1,15 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getNoteById } from "./NotesApiSlice";
 import { Spinner } from "react-bootstrap";
+import DeleteNoteModal from "./DeleteNoteModal";
+import EditNoteModal from "./EditNoteModal";
+
 const ViewNote = () => {
   const { noteId } = useParams();
-  const note = getNoteById(noteId);
+const {note, isSuccess} = getNoteById(noteId);
+
+
+
   const DateFormater = (date) => {
     const options = {
       weekday: "short",
@@ -15,33 +21,33 @@ const ViewNote = () => {
   };
   let content = (
     <section>
-      <div className="container py-5 h-100">
+      <div className="container py-3 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-md-9 col-lg-7 col-xl-5">
             <div className="card">
               <div className="card-body p-3">
                 <div className="d-flex text-black">
                   <div className="flex-grow-1 ms-1">
-                    
+
                     <h5 className="mb-1">{note?.title}</h5>
                     <p className="my-2">{note?.text}</p>
 
-                    <div className="d-flex justify-content-start rounded-3 p-1 mb-2 info">
-                      <div className="mx-2">
+                    <div className="d-flex justify-content-start p-1 mb-3 info">
+                      <div className="mx-1">
                         <p className="small text-muted mb-1">Status</p>
-                        
+
                         {note.completed ? (
-            <p className="text-success">
-              <b>Closed</b>
-            </p>
-          ) : (
-            <p className="text-primary">Open</p>
-          )}
-                        
+                          <p className="text-success">
+                            <b>Closed</b>
+                          </p>
+                        ) : (
+                          <p className="text-primary">Open</p>
+                        )}
+
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Owner</p>
-                        <p className="mb-0">{note?.user?.username}</p>
+                        <p className="mb-0"> <Link className = "nav-link" to = {`/dash/users/${note?.user?._id}`}> {note?.user?.username} </Link></p>
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">CreatedAt</p>
@@ -52,20 +58,14 @@ const ViewNote = () => {
                         <p className="mb-0">{DateFormater(note?.updatedAt)}</p>
                       </div>
                     </div>
-                    <div className="d-flex pt-1">
-                      <button
-                        type="button"
-                        className="btn btn-secondary me-1 flex-grow-1"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary  flex-grow-1"
-                      >
-                        Delete
-                      </button>
+
+                     <div className="d-flex pt-1">
+
+
+                      <EditNoteModal note={note} />
+                      <DeleteNoteModal noteId={note?._id} />
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -75,6 +75,6 @@ const ViewNote = () => {
       </div>
     </section>
   );
-  return <>{note ? content : <Spinner animation="border" />}</>;
+  return <>{isSuccess ? content : <Spinner animation="border" />}</>;
 };
 export default ViewNote;

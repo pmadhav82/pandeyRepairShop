@@ -5,7 +5,7 @@ import DeleteUser from "./DeleteUserModal";
 import EditUserModal from "./EditUserModal";
 const ViewUser = () => {
   const { userId } = useParams();
-  const user = getUserById(userId); 
+  const {user,isSuccess} = getUserById(userId); 
   const {username, roles, isActive} = user;
   const userRoles = roles?.toString().replaceAll(",", ", ");
   let content = (
@@ -28,7 +28,7 @@ const ViewUser = () => {
                     >
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Status</p>
-                        <p className="mb-0">{isActive? "Active": "Inactive"}</p>
+                        <p className="mb-0">{isActive? "Active": "Deactivated"}</p>
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Roles</p>
@@ -50,7 +50,7 @@ const ViewUser = () => {
       </div>
     </section>
   );
-  return <> {username? content:<Spinner animation="border"/> } </>;
+  return <> {isSuccess? content:<Spinner animation="border"/> } </>;
 };
 
 export default ViewUser;
