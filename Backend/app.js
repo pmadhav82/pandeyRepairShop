@@ -9,7 +9,8 @@ const corsOptions = require("./config/allowedOrigins");
 const errorHandeler = require("./middleware/errorHandeler")
 const userRouter = require('./routes/userRouter');
 const rootRouter = require("./routes/rootRouter");
-const noteRouter = require("./routes/noteRouter")
+const noteRouter = require("./routes/noteRouter");
+const authRouter = require("./routes/authRouter");
 const connectDB = require("./config/dbConnect");
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/", rootRouter);
 app.use('/user', userRouter);
 app.use("/note", noteRouter);
+app.use("/auth", authRouter);
 
 app.all("*",(req,res)=>{
     res.json({message:"Page not found"})

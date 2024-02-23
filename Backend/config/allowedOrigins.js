@@ -1,4 +1,4 @@
-const allowedOrigins = ["http://localhost:3ooo", "http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173"];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -8,7 +8,7 @@ const corsOptions = {
         callback(new Error("Not allowed by CORS"))
     }
   },
-  Credential: true,
+  Credential: true, 
   optionsSuccessStatus:200
 };
 

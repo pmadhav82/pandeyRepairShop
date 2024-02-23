@@ -3,7 +3,10 @@ const Note = require("../modules/Note");
 const bcrypt = require("bcrypt");
 const asyncHandeler = require("express-async-handler");
 
-// get all users
+
+// @desc Get all users
+// @route GET /user
+// @access Private
 const getAllUsers = asyncHandeler(async (req, res) => {
   const users = await User.find().select("-password").lean();
 
@@ -14,7 +17,9 @@ const getAllUsers = asyncHandeler(async (req, res) => {
   res.json(users);
 });
 
-// create user
+// @desc create a new User
+// @route POST /user
+// @access Private
 
 const createNewUser = asyncHandeler(async (req, res) => {
   const { username, password, roles } = req.body;
@@ -52,7 +57,9 @@ const createNewUser = asyncHandeler(async (req, res) => {
   }
 });
    
-// update user
+// @desc update User
+// @route PUT
+// @access Private
 
 const updateUser = asyncHandeler(async (req, res) => {
   const { id, password, username, roles, isActive } = req.body;
@@ -93,7 +100,9 @@ res.status(200).json({message:`${updatedUser.username} is updated`})
 
 });
 
-
+// @desc Delete User
+// @route DELETE /user
+// @access Private
 const deleteUser = asyncHandeler(async (req, res)=>{
 const {id} = req.body;
 if(!id){

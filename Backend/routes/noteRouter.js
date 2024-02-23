@@ -5,5 +5,5 @@ router.route("/")
 .get(notesController.getAllNotes)
 .post(notesController.createNewNote)
 .delete(notesController.deleteNote)
-.patch(notesController.updateNote)
+.put(notesController.updateNote)
 module.exports = router

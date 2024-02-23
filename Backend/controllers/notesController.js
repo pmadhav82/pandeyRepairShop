@@ -1,13 +1,12 @@
-const User = require("../modules/User");
+
 const Note = require("../modules/Note");
 const asyncHandeler = require("express-async-handler");
-const { isValidObjectId } = require("mongoose");
 
-
-// get all note
-
+// @desc Get all notes
+// @route GET /note
+// @access Private
 const getAllNotes = asyncHandeler(async (req,res)=>{
-    const notes = await Note.find().populate({path:"user",select:"username"}).lean().exec();
+    const notes = await Note.find().sort({completed:1}).populate({path:"user",select:"username"}).lean().exec();
     if(!notes?.length){
         return res
         .status(400)
@@ -21,8 +20,9 @@ const getAllNotes = asyncHandeler(async (req,res)=>{
 })
 
 
-// create a new note
-
+// @desc Creat a new Note
+// @route POST /note
+// @access Private
 const createNewNote = asyncHandeler(async (req,res)=>{
 const {text, title, user} = req.body;
 
@@ -37,12 +37,9 @@ const newNoteObj = {
     title,
     text,
     user
+    
 }
-if(isValidObjectId(user) && user.length ===24){
-    console.log("valid id")
-}else{
-    console.log("Invalid id")
-}
+
 const newNote = await Note.create(newNoteObj)
 if(newNote){
     return res
@@ -59,11 +56,12 @@ res.status(400).json({message:"Something went wrong..."})
 
 })
 
-
+// @desc Update a Note
+// @route PUT /note
+// @access Private
 const updateNote = asyncHandeler(async (req,res)=>{
 const {id, title, text, user, completed} = req.body;
-
-if(!id || !user || !title || !text || !completed ){
+if(!id || !user || !title || !text || typeof completed!== "boolean"){
     return res
     .status(400)
     .json({message:"All fields are required"})
@@ -85,7 +83,9 @@ const updatedNote = await note.save();
 res.json({message:`${updatedNote.title} is updated`})
 })
 
-
+// @desc Delete a Note
+// @route DELETE /note
+// @access Private
 const deleteNote = asyncHandeler(async (req,res) =>{
 const {id} = req.body;
 if(!id){
