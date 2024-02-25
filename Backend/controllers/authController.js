@@ -22,10 +22,10 @@ if(!isValidPassword) return res.status(401).json({message:"Password is incorrect
 
 
 //generate tokens
-const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id}
-//const {refreshToken, accessToken} = generateTokens();
-const refreshToken   = getRefreshToken(userInfo);
-const accessToken = getAccessToken(foundUser._id);
+const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id.toString()}
+
+const refreshToken   = getRefreshToken(userInfo.userId);
+const accessToken = getAccessToken(userInfo);
 
 res.cookie("jwt",refreshToken,{httpOnly:true,secure:true, sameSite:"none", maxAge:7*24*60*60*1000})
 res.json({accessToken})
@@ -45,9 +45,10 @@ const refreshToken = cookies.jwt;
 
 jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,asyncHandeler(async(err, decoded)=>{
 if(err) return res.status(403).json({message:"Forbidden"})
-const foundUser = await User.findById({_id:decoded.userId});
+
+const foundUser = await User.findOne({_id:decoded.userId}).exec();
 if(!foundUser) return res.status(401).json({message:"Unauthorized"});
-const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id}
+const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id.toString()}
 
 const accessToken = getAccessToken(userInfo);
 res.json({accessToken});
