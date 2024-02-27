@@ -9,7 +9,7 @@ import DashLayout from "./components/DashLayout";
 import UserWelcome from "./features/auth/UserWelcome";
 import NotesList from "./features/notes/NotesList";
 import UsersList from "./features/users/UsersList";
-
+import ProtectedRoute from "./features/auth/ProtectedRoute";
 import NewUserForm from "./features/users/NewUserForm";
 
 import ViewUser from "./features/users/ViewUser";
@@ -29,7 +29,7 @@ function App() {
           <Route index element={<Welcome />} />
           <Route path="/login" element={<Login />} />
 
-          
+          <Route  element = {<ProtectedRoute/>}>
             <Route path="/dash" element={<DashLayout />}>
               <Route index element={<UserWelcome />} />
               <Route path="notes">
@@ -43,6 +43,11 @@ function App() {
                 <Route path="new" element={<NewUserForm />} />
               </Route>
             </Route>
+
+
+          </Route>
+
+
           </Route>
       
       </Routes>
