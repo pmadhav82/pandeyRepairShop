@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const mongoose = require("mongoose");
 const {logger, logEvents} = require("./middleware/logger");
-const corsOptions = require("./config/allowedOrigins");
 const errorHandeler = require("./middleware/errorHandeler")
 const userRouter = require('./routes/userRouter');
 const rootRouter = require("./routes/rootRouter");
@@ -18,7 +17,10 @@ const PORT =  process.env.PORT || 8000;
 
 
 app.use(logger);
-app.use(cors(corsOptions));
+
+app.use(cors({origin: true, 
+credentials: true   }));
+
 app.use(express.json());
 app.use(cookieParser());
 

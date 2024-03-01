@@ -1,21 +1,31 @@
 const jwt = require("jsonwebtoken");
-
+const User = require("../modules/User");
 const verifyJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization || req.headers.Authorization;
+const asyncHandeler = require("express-async-handler");
+  const cookies = req.cookies;
 
-    if (!authHeader?.startsWith("Bearer")) return res.status(401).json({ message: "Unauthorized" })
-const token = authHeader.split(" ")[1];
-jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(error, decoded)=>{
-    if(error) return res.status(403).json({message:"Forbidden", error});
-  const {userId, roles, username} = decoded;
-  
-  req.username = username;
-  req.userId = userId;
-  req.roles = roles;
+  if(!cookies?.jwt) return res.status(401).json({message:"Unauthorized"});
 
-  next()
-})
+const token = cookies.jwt;
+
+
+
+jwt.verify(token, process.env.TOKEN_SECRET,asyncHandeler(async(err, decoded)=>{
+if(err) return res.status(403).json({message:"Forbidden"})
+
+const foundUser = await User.findById({_id:decoded.userId}).exec();
+if(!foundUser) return res.status(401).json({message:"Unauthorized"});
+const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id.toString()}
+
+req.userInfo = userInfo;
+next()
+
+
+}))
 
 
 }
+
+
+
 module.exports = verifyJWT;
