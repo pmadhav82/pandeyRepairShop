@@ -2,11 +2,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { HouseFill } from "react-bootstrap-icons";
 import { Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { getCurrentUserInfo } from "../features/auth/authSlice";
+import { getUserInfo } from "../features/auth/authSlice";
 const DashFooter = () => {
   const navigate = useNavigate();
-  const userInfo = useSelector(getCurrentUserInfo);
-
+  const userInfo = useSelector(getUserInfo);
   const { pathname } = useLocation();
 
   const goHomeClicked = () => navigate("/dash");

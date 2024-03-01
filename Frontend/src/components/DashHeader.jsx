@@ -15,17 +15,22 @@ const DashHeader = ()=>{
 const dispatch = useDispatch();
 const navigate = useNavigate();
 
-    const [sendLogout,{isLoading, isSuccess, isError, error, data}] = useSendLogoutMutation()
+    const [sendLogout,{isLoading, isError, error, data}] = useSendLogoutMutation()
 
 
 const handleLogout = async()=>{
- await sendLogout().unwrap();
- if(!isError){
-     dispatch(logOut());
-     showToastMessage(data?.message);
-     navigate("/");
+try{
 
- }
+    await sendLogout().unwrap();
+    
+        dispatch(logOut());
+        showToastMessage(data?.message);
+        navigate("/");
+}catch(er){
+    console.log(er)
+}
+
+
 
 
 }

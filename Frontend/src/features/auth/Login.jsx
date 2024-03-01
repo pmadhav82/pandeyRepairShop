@@ -4,9 +4,8 @@ import { useLoginMutation } from "./authApiSlice";
 import DisplayError from "../../config/DisplayError";
 import useToast from "../../config/useToast";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "./authSlice";
 import { useNavigate } from "react-router-dom";
-
+import { setUserInfo } from "./authSlice";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,14 +18,15 @@ const Login = () => {
     const onUsernameChanged = e => setUsername(e.target.value);
     const onPasswordChanged = e => setPassword(e.target.value);
 
-    const [login, {isLoading, isError, error, data}] = useLoginMutation();
+    const [login, {isLoading, isError, error}] = useLoginMutation();
 
     const onSubmit = async (e) =>{
 e.preventDefault();
 try{
-  const {accessToken, userInfo} = await login({username, password}).unwrap();
-  if(accessToken){
-    dispatch(setCredentials({ userInfo}));
+  const {userInfo} = await login({username, password}).unwrap();
+  
+  if(userInfo){
+    dispatch(setUserInfo({userInfo}));
   showToastMessage("Login successfull");
   setUsername("");
   setPassword("")
@@ -44,6 +44,7 @@ try{
 <Container>
     <h1>Login</h1>
     {isError && <DisplayError error = {error}/>}
+
 <Form>
         <Form.Group className='my-2' controlId='username'>
           <Form.Label>Username</Form.Label>
@@ -67,7 +68,7 @@ try{
         </Form.Group>
 
         <Button
-          disabled={false}
+          disabled={isLoading}
           type='submit'
           variant='primary'
           className='mt-3' onClick={onSubmit}
