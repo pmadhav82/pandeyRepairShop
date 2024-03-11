@@ -1,14 +1,15 @@
-import { Link, useParams } from "react-router-dom";
-import { getNoteById } from "./NotesApiSlice";
 import { Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import DeleteNoteModal from "./DeleteNoteModal";
 import EditNoteModal from "./EditNoteModal";
+import { getNoteById } from "./NotesApiSlice";
+import useAuth from "../../hooks/useAuth";
 
 const ViewNote = () => {
   const { noteId } = useParams();
 const {note, isSuccess} = getNoteById(noteId);
 
-
+const {hasAdminOrManagerRole} = useAuth();
 
   const DateFormater = (date) => {
     const options = {
@@ -47,7 +48,7 @@ const {note, isSuccess} = getNoteById(noteId);
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">Owner</p>
-                        <p className="mb-0"> <Link className = "nav-link" to = {`/dash/users/${note?.user?._id}`}> {note?.user?.username} </Link></p>
+                        <p className="mb-0">  {note?.user?.username} </p>
                       </div>
                       <div className="mx-2">
                         <p className="small text-muted mb-1">CreatedAt</p>
@@ -59,12 +60,10 @@ const {note, isSuccess} = getNoteById(noteId);
                       </div>
                     </div>
 
-                     <div className="d-flex pt-1">
-
-
-                      <EditNoteModal note={note} />
-                      <DeleteNoteModal noteId={note?._id} />
-                    </div>
+                 { hasAdminOrManagerRole &&   <div className="d-flex pt-1">
+                    <EditNoteModal note={note} />
+                    <DeleteNoteModal noteId={note?._id} />
+                  </div>}
 
                   </div>
                 </div>

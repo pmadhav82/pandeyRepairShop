@@ -1,4 +1,5 @@
-import { Button, ListGroup } from "react-bootstrap";
+import { Button, Card, ListGroup } from "react-bootstrap";
+import { ArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 const Note = ({ note }) => {
   const navigate = useNavigate();
@@ -7,12 +8,18 @@ const Note = ({ note }) => {
   const handleView = () => navigate(`/dash/notes/${note._id}`);
   return (
     <>
-      <ListGroup.Item
-        as="li"
-        className="d-flex justify-content-between align-items-start"
-      >
-        <div className="ms-2 me-auto">
-          <div className="fw-bold">{note?.title}</div>
+ 
+
+<Card  style={{ width: '18rem', margin:"0.5rem 0.5rem" }} className="border-0 bg-light p-1 mx-1">
+
+        <p>
+
+          {note?.title}
+
+        </p>
+        
+        
+
           {note.completed ? (
             <p className="text-success">
               <b>Closed</b>
@@ -20,9 +27,12 @@ const Note = ({ note }) => {
           ) : (
             <p className="text-primary">Open</p>
           )}
-        </div>
-        <Button onClick={handleView}> View</Button>
-      </ListGroup.Item>
+
+
+
+        <Button variant="secondary" onClick={handleView}>View <ArrowRight size={20}/></Button>
+</Card>
+    
     </>
   );
 };

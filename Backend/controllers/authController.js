@@ -1,5 +1,6 @@
 const asyncHandeler = require("express-async-handler");
 const User = require("../modules/User");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generageToken = require("../utils/generateToken");
@@ -22,11 +23,15 @@ const login = asyncHandeler(async (req, res) => {
   if (!isValidPassword)
     return res.status(401).json({ message: "Password is incorrect" });
 
+
+
   const userInfo = {
     username: foundUser.username,
     roles: foundUser.roles,
     userId: foundUser._id,
   };
+  
+
 
   //generate tokens
   const token = generageToken(userInfo.userId);
@@ -53,8 +58,10 @@ const logout = (req, res) => {
   const cookies = req.cookies;
   if (!cookies) return res.status();
 
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "none" });
+  res.clearCookie("jwt",{httpOnly:true, secure: true, sameSite:"none"});
+  
   res.status(200).json({ message: "Logout successfull" });
+
 };
 
 module.exports = { login, logout };

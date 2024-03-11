@@ -1,35 +1,43 @@
+import { Spinner } from "react-bootstrap";
+import DisplayError from "../../config/DisplayError";
+import useAuth from "../../hooks/useAuth";
+import Note from "../notes/Note";
+import { getNoteByUserId } from "../notes/NotesApiSlice";
+const UserWelcome = () => {
 
-import {  ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
-const UserWelcome = ()=>{
-const date = new Date();
-const today = new Intl.DateTimeFormat("en-US",{dateStyle:"full",timeStyle:"short"}).format(date)
-    return<>
+    const {userId} = useAuth();
     
+  const {
+    isLoading,
+    isError,
+    error,
+    userNotes, 
+  } = getNoteByUserId(userId);
 
-    <p>Today is : {today}</p> 
-<ListGroup>
+  
 
-<ListGroup.Item   as="li"
-          className="d-flex justify-content-between align-items-start" >
-    <Link to = "notes" className="nav-link p-2 bg-success text-white rounded mx-1">View TechNotes</Link>
-<Link className="nav-link p-2  bg-secondary text-white rounded mx-1 " to = "notes/new">  Add New Note</Link>
+  const date = new Date();
+  const today = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "full",
+    timeStyle: "short",
+  }).format(date);
+  return (
+    <>
+      <p> {today}</p>
 
-</ListGroup.Item>
+      {isLoading && <Spinner animation="border" />}
 
-<ListGroup.Item   as="li"
-          className="d-flex justify-content-between align-items-start" >
-    <Link className="nav-link p-2  bg-dark text-white rounded mx-1 " to = "users/new">  Add New User</Link>
-    <Link className="nav-link p-2 bg-primary text-white rounded mx-1" to = "users"> View Users List</Link>
-   
+      {isError && <DisplayError error={error} />}
 
-</ListGroup.Item>
-</ListGroup>
-
-
-
-    
+      <div className="d-flex flex-wrap">
+        
+        {userNotes?.length
+        ? userNotes.map((note) => <Note note={note} key={note._id} />)
+        : null}
+  
+    </div>
     </>
-}
+  );
+};
 
-export default UserWelcome
+export default UserWelcome;

@@ -2,6 +2,7 @@
 const Note = require("../modules/Note");
 const asyncHandeler = require("express-async-handler");
 
+
 // @desc Get all notes
 // @route GET /note
 // @access Private
@@ -18,6 +19,8 @@ const getAllNotes = asyncHandeler(async (req,res)=>{
 
     res.json(notes);
 })
+
+
 
 
 // @desc Creat a new Note
@@ -103,11 +106,14 @@ if(!note){
 }
 
 const deletedNote = await note.deleteOne();
+if(!deletedNote) return res.status(400).json({message:"Failed to delete note"});
+
 res.json({message:"Note deleted"})
 })
 
 module.exports = {
     getAllNotes,
+
     createNewNote,
     updateNote,
     deleteNote

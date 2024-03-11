@@ -1,53 +1,99 @@
-import { Container,Row, Col, Button } from "react-bootstrap";
+import {
+    Container,
+    Dropdown
+} from "react-bootstrap";
 import { BoxArrowRight } from "react-bootstrap-icons";
-import { useSendLogoutMutation } from "../features/auth/authApiSlice";
-import useToast from "../config/useToast";
-import DisplayError from "../config/DisplayError";
-import { logOut } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import useToast from "../config/useToast";
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { logOut } from "../features/auth/authSlice";
+import useAuth from "../hooks/useAuth";
+import {
+    HouseFill,
+    JournalPlus,
+    Journals,
+    PeopleFill,
+    PersonCircle,
+    PersonFillAdd,
+} from "react-bootstrap-icons";
+
+const DashHeader = () => {
+  const showToastMessage = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const{hasAdminOrManagerRole,username} = useAuth();
+
+  const [sendLogout, { isLoading, error }] = useSendLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+    const res =  await sendLogout().unwrap();
+
+      dispatch(logOut());
+      showToastMessage(res.message);
+      navigate("/");
+    } catch (er) {
+      showToastMessage(error?.data?.message);
+      console.log(er);
+    }
+  };
 
 
 
 
-const DashHeader = ()=>{
-    const showToastMessage = useToast();
-const dispatch = useDispatch();
-const navigate = useNavigate();
-
-    const [sendLogout,{isLoading, isError, error, data}] = useSendLogoutMutation()
 
 
-const handleLogout = async()=>{
-try{
+  return (
+    <>
+      <Container className=" p-1">
+        <div className="d-flex justify-content-start">
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              <PersonCircle size={30} /> {username}
+            </Dropdown.Toggle>
 
-    await sendLogout().unwrap();
+            <Dropdown.Menu>
+              <Dropdown.Item as={Link} to="/dash">
+                <HouseFill size={30} /> Dashboard
+              </Dropdown.Item>
+
+              <Dropdown.Item as={Link} to="/dash/notes/new">
+                <JournalPlus size={30} /> Add New Note
+              </Dropdown.Item>
+
+              <Dropdown.Item as={Link} to="/dash/notes">
+                
+                <Journals size={30} /> View Notes
+              </Dropdown.Item>
+
+        {hasAdminOrManagerRole && <Dropdown.Item as={Link} to="/dash/users/new">
+        <PersonFillAdd size={30} /> Add New User
+        </Dropdown.Item>}
+
+              <Dropdown.Item as={Link} to="/dash/users">
+                <PeopleFill size={30} /> View Users
+              </Dropdown.Item>
+              
+              <Dropdown.Divider />
+
+              <Dropdown.Item
+                as="button"
+                onClick={handleLogout}
+                disabled={isLoading}
+                className=" bg-transparent text-primary"
+              >
+                {<BoxArrowRight size={30} />} Logout
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+
     
-        dispatch(logOut());
-        showToastMessage(data?.message);
-        navigate("/");
-}catch(er){
-    console.log(er)
-}
-
-
-
-
-}
-
-    return <>
-    
-    <Container>
-        <Row>
-            {isError && <DisplayError error={error}/>}
-            <Col>
-            <Button onClick={handleLogout} disabled = {isLoading}>
-
-            {<BoxArrowRight size={30}/>} Logout
-            </Button>
-            </Col>
-        </Row>
-    </Container>
+      </Container>
     </>
-}
-export default DashHeader
+  );
+};
+export default DashHeader;

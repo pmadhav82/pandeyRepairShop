@@ -77,6 +77,7 @@ const [validUsername, validPassword] = useValidation(username,password);
 
   const content = (
     <>
+        <h2>Add New User</h2>
       <div>
         {isLoading && <Spinner animation="border" />}
         {isError && (
@@ -85,9 +86,8 @@ const [validUsername, validPassword] = useValidation(username,password);
           </p>
         )}
       </div>
-      <form>
+      <form style={{maxWidth:"800px"}}>
         
-        <h2>Add New User</h2>
         <div className="form-group mt-1">
           <label>Username</label>
           <input

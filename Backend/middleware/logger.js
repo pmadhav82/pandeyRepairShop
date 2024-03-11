@@ -3,7 +3,11 @@ const { v4: uuid } = require("uuid");
 const fs = require("fs");
 const fsPromises = require("fs").promises;
 const path = require("path");
-const {allowedOrigins} = require("../config/allowedOrigins")
+
+
+const allowedOrigins =  ["http://localhost:5173"];
+
+
 const logEvents = async (message, logFileName) => {
   const dateTime = format(new Date(), "MM/dd/yyy");
   const logItem = `${dateTime}\t${uuid()}\t${message}\n`;

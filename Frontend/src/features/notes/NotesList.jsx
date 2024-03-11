@@ -1,7 +1,7 @@
-import Note from "./Note";
-import { ListGroup, Spinner } from "react-bootstrap";
-import { useGetNotesQuery } from "./NotesApiSlice";
+import { Spinner } from "react-bootstrap";
 import DisplayError from "../../config/DisplayError";
+import Note from "./Note";
+import { useGetNotesQuery } from "./NotesApiSlice";
 
 const NotesList = () => {
   const {
@@ -15,6 +15,10 @@ const NotesList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+
+
+
+
   let content;
 
   if (isLoading) {
@@ -28,11 +32,11 @@ const NotesList = () => {
   if (isSuccess) {
     content = (
       <>
-        <div>
+        <div className="d-flex flex-wrap">
         
-          <ListGroup as="ol" numbered>    {notes?.length
+            {notes?.length
             ? notes.map((note) => <Note note={note} key={note._id} />)
-            : null}</ListGroup>
+            : null}
       
         </div>
       </>

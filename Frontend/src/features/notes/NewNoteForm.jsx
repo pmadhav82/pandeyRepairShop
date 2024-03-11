@@ -53,12 +53,13 @@ const NewNoteForm = ({ users }) => {
   });
 
   const content = <>
+  <h2>Add New Note</h2>
     <div>
 
       {isError && <DisplayError error={error}/>}
     </div>
     
-    <Form>
+    <Form style={{maxWidth:"800px"}}>
 
       <Form.Group className="mb-3">
         <Form.Label>Title</Form.Label>

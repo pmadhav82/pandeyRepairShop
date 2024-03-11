@@ -6,25 +6,37 @@ import useToast from "../../config/useToast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserInfo } from "./authSlice";
+import { useLocation, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUserInfo } from "./authSlice";
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-    const showToastMessage = useToast();
+
+const userInfo = useSelector(getUserInfo);
+const  {pathname} = useLocation();
 
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
 
-    const onUsernameChanged = e => setUsername(e.target.value);
-    const onPasswordChanged = e => setPassword(e.target.value);
+const dispatch = useDispatch();
+const navigate = useNavigate();
+const showToastMessage = useToast();
 
-    const [login, {isLoading, isError, error}] = useLoginMutation();
+
+const [username, setUsername] = useState("");
+const [password, setPassword] = useState("");
+
+const onUsernameChanged = e => setUsername(e.target.value);
+const onPasswordChanged = e => setPassword(e.target.value);
+
+const [login, {isLoading, isError, error}] = useLoginMutation();
+
+
+if(pathname == "/login" && userInfo) return <Navigate to="/dash" replace/>
+
 
     const onSubmit = async (e) =>{
 e.preventDefault();
 try{
   const {userInfo} = await login({username, password}).unwrap();
-  
   if(userInfo){
     dispatch(setUserInfo({userInfo}));
   showToastMessage("Login successfull");
@@ -45,7 +57,7 @@ try{
     <h1>Login</h1>
     {isError && <DisplayError error = {error}/>}
 
-<Form>
+<Form style={{maxWidth:"700px"}}>
         <Form.Group className='my-2' controlId='username'>
           <Form.Label>Username</Form.Label>
           <Form.Control

@@ -1,4 +1,4 @@
-import {  ListGroup, Spinner } from "react-bootstrap";
+import {  Container, ListGroup, Spinner } from "react-bootstrap";
 import { useGetUsersQuery } from "./usersApiSlice";
 import User from "./User";
 import DisplayError from "../../config/DisplayError";
@@ -20,12 +20,15 @@ const UsersList = () => {
     content = <Spinner animation="border" />;
   } else if (isSuccess) {
     content = (
-      
-        <ListGroup as="ol" numbered>
+      <Container className="d-flex flex-wrap">
+
         {users?.length
           ? users.map((user) => <User user={user} key={user._id} />)
           : null}
-      </ListGroup>
+      
+
+      </Container>
+        
     );
   } else if (isError) {
     content = <DisplayError error={error}/>

@@ -1,12 +1,9 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import { HouseFill } from "react-bootstrap-icons";
-import { Container, Row, Col } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { getUserInfo } from "../features/auth/authSlice";
+import { Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 const DashFooter = () => {
   const navigate = useNavigate();
-  const userInfo = useSelector(getUserInfo);
-  const { pathname } = useLocation();
+const {roles, username} = useAuth();
 
   const goHomeClicked = () => navigate("/dash");
 
@@ -15,20 +12,15 @@ const DashFooter = () => {
       <Container className="mt-2">
         <Row>
           <Col>
-            <div className="d-flex p-2">
-              {pathname !== "/dash" && (
-                <button onClick={goHomeClicked}>
-                  <HouseFill size={20} />
-                </button>
-              )}
-              <p className="mx-1">
-                Current User: <b>{userInfo?.username}</b>{" "}
+            
+              <p>
+                User: <b>{username}</b>{" "}
               </p>
-              <p className="mx-1">
-                Roles: <b> {userInfo?.roles?.toString().replaceAll(",", ", ")}</b>
+              <p>
+                Roles: <b> {roles?.toString().replaceAll(",", ", ")}</b>
    
               </p>
-            </div>
+            
           </Col>
         </Row>
       </Container>

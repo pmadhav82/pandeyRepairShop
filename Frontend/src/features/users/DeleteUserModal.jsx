@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useDeleteUserMutation } from "./usersApiSlice";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useToast from "../../config/useToast";
 function DeleteUser({ username, userId }) {
   const navigate = useNavigate();
-  const [deleteUser, { isError, isLoading, isSuccess, error, data }] =
+  const [deleteUser, { isError, isLoading, error, data }] =
     useDeleteUserMutation();
 
 const showToastMessage = useToast();
@@ -17,16 +17,19 @@ const showToastMessage = useToast();
   const handleShow = () => setShow(true);
 
   const deleteUserHandeler = async () => {
-    await deleteUser(userId);
-  }
-
-  useEffect(() => {
-    if (isSuccess) {
-      showToastMessage(data?.message)
+    try{
+      const res =  await deleteUser(userId).unwrap();
+      console.log(res);
+   
+      showToastMessage(res.message)
       navigate("/dash/users");
       handleClose();
+
+    }catch(er){
+      console.log(er)
     }
-  }, [isSuccess, navigate]);
+  }
+
 
   return (
     <>
