@@ -2,6 +2,7 @@ import { Spinner } from "react-bootstrap";
 import { useGetUsersQuery } from "../users/usersApiSlice";
 import NewNoteForm from "./NewNoteForm";
 import DisplayError from "../../config/DisplayError";
+import useTitle from "../../hooks/useTitle";
 
 const NewNote = ()=>{
     const {
@@ -14,7 +15,7 @@ const NewNote = ()=>{
    
    
    
-
+useTitle("New Note Form")
 
 let content;
 

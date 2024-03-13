@@ -16,6 +16,9 @@ isActive:{
 }
 
 
-})
+},
+{capped:{size:1024,max:4},
+timestamps:true}
+)
 
 module.exports = mongoose.model("users", userSchema);

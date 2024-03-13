@@ -8,10 +8,13 @@ const generageToken = require("../utils/generateToken");
 // @route POST /auth
 // @access Public
 const login = asyncHandeler(async (req, res) => {
+
   const { username, password } = req.body;
   if (!username || !password)
     return res.status(400).json({ message: "All fields are required to fill" });
 
+
+    
   // check for user
   const foundUser = await User.findOne({ username }).exec();
   if (!foundUser) return res.status(401).json({ message: "User not found" });

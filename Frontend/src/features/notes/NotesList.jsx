@@ -2,6 +2,7 @@ import { Spinner } from "react-bootstrap";
 import DisplayError from "../../config/DisplayError";
 import Note from "./Note";
 import { useGetNotesQuery } from "./NotesApiSlice";
+import useTitle from "../../hooks/useTitle";
 
 const NotesList = () => {
   const {
@@ -18,7 +19,7 @@ const NotesList = () => {
 
 
 
-
+useTitle("Notes List");
   let content;
 
   if (isLoading) {

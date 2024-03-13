@@ -2,6 +2,7 @@ import {  Container, ListGroup, Spinner } from "react-bootstrap";
 import { useGetUsersQuery } from "./usersApiSlice";
 import User from "./User";
 import DisplayError from "../../config/DisplayError";
+import useTitle from "../../hooks/useTitle";
 const UsersList = () => {
   const {
     data: users,
@@ -14,6 +15,9 @@ const UsersList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+
+useTitle("Users List")
+
   let content;
 
   if (isLoading) {

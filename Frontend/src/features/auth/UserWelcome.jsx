@@ -3,9 +3,10 @@ import DisplayError from "../../config/DisplayError";
 import useAuth from "../../hooks/useAuth";
 import Note from "../notes/Note";
 import { getNoteByUserId } from "../notes/NotesApiSlice";
+import useTitle from "../../hooks/useTitle";
 const UserWelcome = () => {
 
-    const {userId} = useAuth();
+    const {userId, username} = useAuth();
     
   const {
     isLoading,
@@ -15,7 +16,7 @@ const UserWelcome = () => {
   } = getNoteByUserId(userId);
 
   
-
+useTitle(username)
   const date = new Date();
   const today = new Intl.DateTimeFormat("en-US", {
     dateStyle: "full",

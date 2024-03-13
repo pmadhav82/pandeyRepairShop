@@ -19,7 +19,6 @@ const showToastMessage = useToast();
   const deleteUserHandeler = async () => {
     try{
       const res =  await deleteUser(userId).unwrap();
-      console.log(res);
    
       showToastMessage(res.message)
       navigate("/dash/users");

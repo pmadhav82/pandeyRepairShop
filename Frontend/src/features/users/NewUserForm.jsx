@@ -5,6 +5,7 @@ import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import useValidation from "../../config/regex";
 import useToast from "../../config/useToast";
+import useTitle from "../../hooks/useTitle";
 const NewUserForm = () => {
   const [addNewUser, { isLoading, isError, error, isSuccess, data }] =
     useAddNewUserMutation();
@@ -13,7 +14,7 @@ const NewUserForm = () => {
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState([ROLES.Employee]);
 
-
+useTitle("New User Form")
 const showToastMessage = useToast();
 
 const [validUsername, validPassword] = useValidation(username,password);

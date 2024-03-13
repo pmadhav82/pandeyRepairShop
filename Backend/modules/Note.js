@@ -18,14 +18,15 @@ text:{
 title:{
     type:String,
     required:true
-},
-ticket:{
-    type:Number
 }
+
 },
 {
-    timestamps:true
+    timestamps:true,
+    capped:{size:1024, max:50}
 }
+
+
 
 
 )
@@ -33,11 +34,5 @@ ticket:{
 
 
 
-noteSchema.plugin(AutoIncrement, {
-    inc_field: 'ticket',
-    id:"ticketNum",
-    start_seq: 500,
-    disable_hooks: true
-})
 
 module.exports = mongoose.model("notes", noteSchema);

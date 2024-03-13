@@ -133,7 +133,7 @@ res.json({message:`${user.username} is deleted`})
 
 })
 
-
+ 
 
 const getCurrentUser = (req,res) =>{
   
