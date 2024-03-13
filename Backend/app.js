@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({path:"./.env"});
 const express = require('express');
 const  path = require('path');
 const cookieParser = require('cookie-parser');
@@ -53,6 +53,6 @@ mongoose.connection.once("open", ()=>{
 
 mongoose.connection.on("error", (err)=>{
     console.log(err.message);
-    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, "mongoErrorLog.log")
+    logEvents(`${err.no}: ${err.code}\t${err.message}\t${err.syscall}\t${err.hostname}`, "mongoErrorLog.log")
 })
 

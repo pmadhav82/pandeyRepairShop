@@ -9,7 +9,7 @@ const allowedOrigins =  ["http://localhost:5173"];
 
 
 const logEvents = async (message, logFileName) => {
-  const dateTime = format(new Date(), "MM/dd/yyy");
+  const dateTime = format(new Date(), "dd/MM/yyy");
   const logItem = `${dateTime}\t${uuid()}\t${message}\n`;
 
   try {
