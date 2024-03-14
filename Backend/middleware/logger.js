@@ -5,7 +5,7 @@ const fsPromises = require("fs").promises;
 const path = require("path");
 
 
-const allowedOrigins =  ["http://localhost:5173"];
+const allowedOrigins =  ["https://pandeyrepairshop.onrender.com/"];
 
 
 const logEvents = async (message, logFileName) => {

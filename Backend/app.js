@@ -18,7 +18,7 @@ const PORT =  process.env.PORT || 8000;
 
 app.use(logger);
 
-app.use(cors({origin: true, 
+app.use(cors({origin: "https://pandeyrepairshop.onrender.com/", 
 credentials: true   }));
 
 app.use(express.json());
