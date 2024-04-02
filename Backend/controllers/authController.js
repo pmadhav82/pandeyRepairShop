@@ -4,6 +4,7 @@ const User = require("../modules/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generageToken = require("../utils/generateToken");
+
 // @desc Login
 // @route POST /auth
 // @access Public
@@ -37,34 +38,68 @@ const login = asyncHandeler(async (req, res) => {
 
 
   //generate tokens
-  const token = generageToken(userInfo.userId);
+  const {accessToken, refreshToken} = generageToken(userInfo); 
+  //const token = generageToken(userInfo.userId);
 
 
 
-  res.cookie("jwt", token, {
+  res.cookie("jwt", refreshToken, {
     httpOnly:true,
     secure:true,
     sameSite: "none",
-    maxAge: 1 * 24 * 60 * 60 * 1000,
+    maxAge: 2*60*1000
   });
 
 
   
-  res.json({ userInfo });
+  res.json({ accessToken });
 });
+
+
+
+// @desc Refresh
+// @route GET /auth/refresh
+// @access Public 
+const refresh = (req, res) => {
+  const cookies = req.cookies
+
+  if (!cookies?.jwt) return res.status(401).json({ message: 'Unauthorized' })
+
+  const refreshToken = cookies.jwt
+
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,asyncHandeler(async(err, decoded)=>{
+    if(err) return res.status(403).json({message: err})
+    
+    const foundUser = await User.findById({_id:decoded.userId}).exec();
+    if(!foundUser) return res.status(401).json({message:"Unauthorized"});
+    const userInfo = {username:foundUser.username, roles:foundUser.roles, userId: foundUser._id.toString()}
+    
+  const {accessToken} = generageToken(userInfo);
+
+  res.json({accessToken})  
+    
+    }))
+
+
+}
+
+
+
+
+
 
 // @desc Logout user
 // @route POST /auth/logout
 // @access Public
 
-const logout = (req, res) => {
+function logout(req, res) {
   const cookies = req.cookies;
   if (!cookies) return res.status();
 
-  res.clearCookie("jwt",{httpOnly:true, secure: true, sameSite:"none"});
-  
+  res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "none" });
+
   res.status(200).json({ message: "Logout successfull" });
 
-};
+}
 
-module.exports = { login, logout };
+module.exports = { login, logout, refresh};

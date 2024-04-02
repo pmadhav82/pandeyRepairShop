@@ -15,6 +15,7 @@ import { ROLES } from "./config/roles";
 import ViewNote from "./features/notes/ViewNote";
 import NewNote from "./features/notes/NewNote";
 import RequiredPermission from "./features/auth/RequiredPermission";
+import { PersistLogin } from "./features/auth/PersistLogin";
 function App() {
 
 
@@ -29,6 +30,8 @@ function App() {
           <Route index element={<Welcome />} />
           <Route path="/login" element={<Login />} />
 
+
+<Route element = {<PersistLogin/>}>
           <Route  element = {<ProtectedRoute/>}>
 
             <Route path="/dash" element={<DashLayout />}>
@@ -51,6 +54,15 @@ function App() {
             </Route>
 
           </Route>
+
+
+
+</Route>
+
+
+
+
+
 
 
 

@@ -7,7 +7,7 @@ import useToast from "../../config/useToast";
 import { useDeleteNoteMutation } from "./NotesApiSlice";
 
 const DeleteNoteModal = ({ noteId }) => {
-  const [deleteNote, { isError, error, isLoading, isSuccess, data }] =
+  const [deleteNote, { isError, error, isLoading, data }] =
     useDeleteNoteMutation();
 
     const navigate = useNavigate();
@@ -17,16 +17,12 @@ const DeleteNoteModal = ({ noteId }) => {
   const handleShow = () => setShow(true);
 
   const deleteNoteHandeler = async () => {
-    await deleteNote(noteId)
-  }
-
-  useEffect(() => {
-    if (isSuccess) {
-      showToastMessage(data?.message)
+    await deleteNote(noteId);
+      showToastMessage(data?.message);
       navigate("/dash/notes");
       handleClose();
-    }
-  }, [isSuccess, navigate]);
+  
+  }
 
   return <>
      <Button

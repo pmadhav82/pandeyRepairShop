@@ -6,8 +6,8 @@ import { getNoteByUserId } from "../notes/NotesApiSlice";
 import useTitle from "../../hooks/useTitle";
 const UserWelcome = () => {
 
-    const {userId, username} = useAuth();
-    
+
+    const {username, userId} = useAuth();
   const {
     isLoading,
     isError,

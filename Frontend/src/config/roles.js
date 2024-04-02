@@ -1,7 +1,4 @@
-
-import { useSelector } from "react-redux";
-import { getUserInfo } from "../features/auth/authSlice";
-
+import useAuth from "../hooks/useAuth";
 
 
 export const ROLES = {
@@ -10,11 +7,11 @@ export const ROLES = {
   Manager: "Manager",
 };
 
-
 export const checkRole  =()=>{
-  const userInfo = useSelector(getUserInfo);
+  const {roles} = useAuth()
+  
 
-  const hasAdminOrManagerRole =  userInfo?.roles?.some((role)=> role === ROLES.Admin || ROLES.Manager);
+  const hasAdminOrManagerRole = roles?.some((role)=> role === ROLES.Admin || ROLES.Manager);
   return hasAdminOrManagerRole;
 
 } 

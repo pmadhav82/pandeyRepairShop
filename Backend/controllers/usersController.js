@@ -135,18 +135,10 @@ res.json({message:`${user.username} is deleted`})
 
  
 
-const getCurrentUser = (req,res) =>{
-  
-  if(!req.userInfo) return res.status(400).json({message:"User is not logged in"});
-
-  res.json(req.userInfo)
-}
-
 
 module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
-    deleteUser,
-    getCurrentUser
+    deleteUser
 }

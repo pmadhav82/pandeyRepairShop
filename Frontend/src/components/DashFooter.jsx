@@ -14,7 +14,7 @@ const {roles, username} = useAuth();
           <Col>
             
               <p>
-                User: <b>{username}</b>{" "}
+               Current User: <b>{username}</b>{" "}
               </p>
               <p>
                 Roles: <b> {roles?.toString().replaceAll(",", ", ")}</b>

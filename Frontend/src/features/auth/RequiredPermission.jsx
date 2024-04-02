@@ -1,12 +1,10 @@
 import { Navigate } from "react-router-dom"
-import { useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
-import { getUserInfo } from "./authSlice"
+import useAuth from "../../hooks/useAuth"
 
 const RequiredPermission = ({allowedRoles = []}) =>{
-    const {roles} = useSelector(getUserInfo);
 
-    
+  const {roles} = useAuth()
 
   return allowedRoles.some((role)=> roles.includes(role)) ? <Outlet/> : <Navigate to= "/dash" replace/>
 

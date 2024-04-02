@@ -1,17 +1,18 @@
-import { Container, Form, Button} from "react-bootstrap";
+import { Container, Form, Button, Spinner} from "react-bootstrap";
 import { useState } from "react";
 import { useLoginMutation } from "./authApiSlice";
 import DisplayError from "../../config/DisplayError";
 import useToast from "../../config/useToast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setUserInfo } from "./authSlice";
+import { setAccessToken } from "./authSlice";
 import { useLocation, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { getUserInfo } from "./authSlice";
-const Login = () => {
+import useAuth from "../../hooks/useAuth";
 
-const userInfo = useSelector(getUserInfo);
+
+const Login = () => {
+const {accessToken:token} = useAuth();
+
 const  {pathname} = useLocation();
 
 
@@ -30,19 +31,21 @@ const onPasswordChanged = e => setPassword(e.target.value);
 const [login, {isLoading, isError, error}] = useLoginMutation();
 
 
-if(pathname == "/login" && userInfo) return <Navigate to="/dash" replace/>
+ if(pathname == "/login" && token) return <Navigate to="/dash" replace/>
 
 
     const onSubmit = async (e) =>{
 e.preventDefault();
 try{
-  const {userInfo} = await login({username, password}).unwrap();
-  if(userInfo){
-    dispatch(setUserInfo({userInfo}));
+  const {accessToken} = await login({username, password}).unwrap();
+  
+  if(accessToken){
+    dispatch(setAccessToken({accessToken}));
   showToastMessage("Login successfull");
   setUsername("");
   setPassword("")
   navigate("/dash")
+  localStorage.setItem("isLoggedIn",JSON.stringify(true));
   }
 
 }catch(er){
@@ -56,7 +59,9 @@ try{
 <Container>
     <h1>Login</h1>
     {isError && <DisplayError error = {error}/>}
-
+{isLoading && <div className="d-flex justify-content-center">
+  <Spinner/>
+  </div>}
 <Form style={{maxWidth:"700px"}}>
         <Form.Group className='my-2' controlId='username'>
           <Form.Label>Username</Form.Label>

@@ -4,10 +4,18 @@ export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotes: builder.query({
       query: () => "/note",
-      providesTags: (result = [], error, arg) => [
-        "Note",
-        ...result.map(({ _id }) => ({ type: "Note", id: _id }))
-      ]
+      providesTags: (result, error, arg) =>{
+        if(result){
+
+          
+      return    [
+            "Note",
+            ...result?.map(({ _id }) => ({ type: "Note", id: _id }))
+          ]
+        }else{
+          return [{type:"Note"}]
+        }
+    }
     }),
 
 
@@ -82,7 +90,7 @@ export const getNoteById = (noteId) => {
     selectFromResult: (result) => {
       const { isLoading, isSuccess } = result;
 
-      const note = result.data ? result.data.find((note) => note._id === noteId) : [];
+      const note = result?.data ? result?.data.find((note) => note._id === noteId) : [];
       return { isLoading, isSuccess, note }
     }
   })

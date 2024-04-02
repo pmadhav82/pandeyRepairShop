@@ -10,7 +10,7 @@ const getAllNotes = asyncHandeler(async (req,res)=>{
     const notes = await Note.find().sort({completed:1}).populate({path:"user",select:"username"}).lean().exec();
     if(!notes?.length){
         return res
-        .status(400)
+        .status(404)
         .json({message:"No notes are found"})
     }
 

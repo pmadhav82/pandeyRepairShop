@@ -15,6 +15,7 @@ const UsersList = () => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+  
 
 useTitle("Users List")
 

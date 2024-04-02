@@ -9,7 +9,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 body: { ...credential },
             }),
         }),
-    
+ 
+
         sendLogout: builder.mutation({
             query: () => ({
                 url: "/auth/logout",
@@ -27,8 +28,16 @@ dispatch(apiSlice.util.resetApiState())
     }
             
         }),
+
+refresh: builder.mutation({
+   query: ()=>({
+    url: "/auth/refresh",
+    method: "get"
+   })
+})
+
     }),
 });
 
-export const { useLoginMutation, useSendLogoutMutation } =
+export const { useLoginMutation, useSendLogoutMutation, useRefreshMutation } =
     authApiSlice;

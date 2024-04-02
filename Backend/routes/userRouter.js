@@ -11,5 +11,5 @@ router.route("/")
 .put(requiredRole(["Manager", "Admin"]),usersController.updateUser)
 .delete(requiredRole(["Admin", "Manager"]),usersController.deleteUser)
  
-router.route("/currentUser").get(usersController.getCurrentUser);
+
 module.exports = router;

@@ -164,7 +164,7 @@ const EditUserModal = ({ user }) => {
               <div className="col-sm-2">Status</div>
               <div className="form-check form-switch">
   <input onChange={onActiveChanged}  className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked = {active} / >
-  <label className="form-check-label" for="flexSwitchCheckChecked">{active? "Active":"Deactivated"}</label>
+  <label className="form-check-label" htmlFor="flexSwitchCheckChecked">{active? "Active":"Deactivated"}</label>
 </div>
             </div>
           </Modal.Body>

@@ -37,7 +37,7 @@ const {hasAdminOrManagerRole} = useAuth();
                       <div className="mx-1">
                         <p className="small text-muted mb-1">Status</p>
 
-                        {note.completed ? (
+                        {note?.completed ? (
                           <p className="text-success">
                             <b>Closed</b>
                           </p>
