@@ -60,8 +60,8 @@ We believe in a personalized approach to every repair, ensuring that each device
 
         <Row>
           <Col>
-          <h2>Username:Test123</h2>
-          <h2>Password:Test123</h2>
+          <h2>Username:Test</h2>
+          <h2>Password:Test</h2>
             <Button className="btn btn-secondary m-2">
               <Link className="nav-link" to="/login">
                 Employee Login
