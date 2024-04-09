@@ -33,10 +33,7 @@ app.use('/user', userRouter);
 app.use("/note", noteRouter);
 app.use("/auth", authRouter);
 
-app.get("/dbTest",(req,res)=>{
-    const isDbConnected = mongoose.connection.readyState;
-    res.json({isDbConnected});
-})
+
 
 app.all("*",(req,res)=>{
     res.json({message:"Page not found"})
