@@ -1,8 +1,11 @@
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 import { logOut, setAccessToken } from "../../features/auth/authSlice";
-//https://pandeyrepairshop-1.onrender.com
 
-const baseQuery = fetchBaseQuery({ baseUrl: "http://localhost:8000", credentials:"include",
+const base_URL_Local = "http://localhost:8000";
+const base_URL_Production = "https://pandeyrepairshop-1.onrender.com";
+const URL = window.location.host.startsWith("localhost") ? base_URL_Local: base_URL_Production;
+
+const baseQuery = fetchBaseQuery({ baseUrl: URL , credentials:"include",
 prepareHeaders: (headers, api) =>{
 
   const {accessToken} = api.getState().auth

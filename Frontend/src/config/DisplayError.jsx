@@ -1,5 +1,5 @@
 const DisplayError = ({error}) => {
-  console.log(error)
+  
   return (
     <>
     {error? <p className="text-danger">
